@@ -15,3 +15,11 @@ The function of the game are pretty straightforward.
 1. click the mouse pad to work through the herndon monumnets
 2. get as far as you can. 
 3. dont kill bill on army week
+
+
+Helpers:
+- kyle
+- ethan
+- -nick m
+- - dylan
+- grace
