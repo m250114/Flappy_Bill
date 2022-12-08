@@ -1,7 +1,9 @@
 import pygame
 import random
+from pygame import mixer
 
-
+pygame.mixer.pre_init(44100,-16,2,512)
+mixer.init()
 pygame.init()
 
 
@@ -60,8 +62,18 @@ pass_sword=False
 #load images
 #must load images first then blit(Draw)
 bg = pygame.image.load('images/BG (2).png')
-ground_img= pygame.image.load('images/cloud.jpg')
+ground_img= pygame.image.load('images/ground.png')
 button_image=pygame.image.load_extended('images/restart.png')
+
+
+pygame.mixer.music.load('images/Xmas.mp3')
+pygame.mixer.music.play(-1,0.0,10000)
+#load sounds
+swoosh_fx=pygame.mixer.Sound('images/swoosh.wav')
+#set
+swoosh_fx.set_volume(1.0)
+
+
 
 #Pygame Sprite clases already have blit
 #Must include a x and y cordinate for where the goat will be drawn
@@ -92,7 +104,7 @@ class Goat(pygame.sprite.Sprite):
         self.counter = 0
         #populating images using for loop to create iterations
         for num in range(1,4):
-            img=pygame.image.load(f'images/goat{num}.png').convert_alpha()
+            img=pygame.image.load(f"images/goat{num}.png").convert_alpha()
             self.images.append(img)
         #create images in class
         #this is the image that the sprite will be assigned
@@ -109,21 +121,6 @@ class Goat(pygame.sprite.Sprite):
         self.clicked= False
 
     def movment(self):
-
-        #handle the animation
-        #use counter in goat class to increase the image every iteration
-        self.counter += 1
-        flap_cooldown = 5
-
-        if self.counter > flap_cooldown:
-            self.counter = 0
-            self.index += 1
-            #cant go above the images I have in folder so I have to put a buffer to have it reset
-            if self.index >= len(self.images):
-                self.index = 0
-        self.image = self.images[self.index]
-
-
 
     #Gravity
         if flying== True:
@@ -142,6 +139,7 @@ class Goat(pygame.sprite.Sprite):
         if game_over==False:
         #Jumping happens everytime I click the pad
             if pygame.mouse.get_pressed()[0]==1 and self.clicked== False:
+                swoosh_fx.play()
                 self.clicked= True
                 self.vel = -6
         # I need to add a trigger to let pygame know when the mouse has been released
@@ -316,6 +314,7 @@ while run:
         if button.draw()== True:
             game_over= False
             score= reset_game()
+
 
      # This will get all the events that are happening
     # event handlers in pygame acklowdge user input and will look for a specfic one
